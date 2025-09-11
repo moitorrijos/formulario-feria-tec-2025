@@ -1,5 +1,7 @@
 # Formulario Opactic - Feria TEC 2025
 
+## Creado con Astro.build y hospedado en Vercel
+
 ```sh
 npm create astro@latest -- --template minimal
 ```
