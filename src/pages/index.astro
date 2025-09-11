@@ -25,60 +25,101 @@ import { Image } from "astro:assets";
     form {
       max-width: 65ch;
     }
+    img {
+      display: block;
+    }
     span.danger {
       color: red;
     }
+    .logo-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      aspect-ratio: 1 / 1;
+    }
+    .logo-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .video {
+      aspect-ratio: 9 / 16;
+      height: 100%;
+    }
+    .video video {
+      height: 100%;
+      border-radius: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
   </style>
-  <body class="container">
-    <header>
-      <Image src={Logo} alt="OPACTIC Logo" width="200" height="60" />
-      <h2>Formulario de registro para Feria TEC 2025</h2>
-      <p>
-        Por favor, complete el siguiente formulario para registrarse en la Feria
-        TEC 2025 que se dará a cabo este sábado 20 de septiembre desde las 10am
-        en el SOHO City Center de la ciudad de Panamá.
-      </p>
-    </header>
-    <main>
-      <form action="#0">
-        <fieldset>
-          <label for="name">Nombre: <span class="danger">*</span></label>
-          <input type="text" id="name" name="name" required />
-          <label for="email"
-            >Correo electrónico: <span class="danger">*</span></label
+  <body>
+    <main class="container">
+      <div class="grid">
+        <form action="#0">
+          <a
+            href="//opactic.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="logo-link"
           >
-          <input type="email" id="email" name="email" required />
-          <label for="phone">Teléfono: <span class="danger">*</span></label>
-          <input type="tel" id="phone" name="phone" required />
-          <label for="country">País: <span class="danger">*</span></label>
-          <select id="country" name="country" required>
-            <option value="">Seleccione un país</option>
-            {
-              countries.map((country) => (
-                <option
-                  value={country.name}
-                  selected={country.name === "Panama"}
-                >
-                  {country.es_name}
-                </option>
-              ))
-            }
-          </select>
-          <label for="company">Nombre de la empresa:</label>
-          <input type="text" id="company" name="company" />
-          <label for="position">Cargo:</label>
-          <input type="text" id="position" name="position" />
-          <label>
-            <input type="checkbox" name="consent" required />
-            Acepto que mis datos personales sean utilizados por OPACTIC para contactarme
-            sobre noticias de la comunidad, eventos de tecnología y contenido relevante.
-            <span class="danger">*</span>
-          </label>
-        </fieldset>
-
-        <button type="submit">Registrarse</button>
-      </form>
-      <p>Los campos con <span class="danger">*</span> son obligatorios.</p>
+            <Image
+              src={Logo}
+              alt="OPACTIC Logo"
+              width="200"
+              height="60"
+              class="logo-image"
+            />
+          </a>
+          <h2>Formulario de registro para Feria TEC 2025</h2>
+          <p>
+            Por favor, complete el siguiente formulario para registrarse en la
+            Feria TEC 2025 que se dará a cabo este sábado 20 de septiembre de
+            2025 desde las 10am en el <a
+              href="https://maps.app.goo.gl/p7tynFGyuSCjXVD28"
+              target="_blank"
+              rel="noopener noreferrer">SOHO City Center</a
+            > de la ciudad de Panamá.
+          </p>
+          <fieldset>
+            <label for="name">Nombre: <span class="danger">*</span></label>
+            <input type="text" id="name" name="name" required />
+            <label for="email"
+              >Correo electrónico: <span class="danger">*</span></label
+            >
+            <input type="email" id="email" name="email" required />
+            <label for="phone">Teléfono: <span class="danger">*</span></label>
+            <input type="tel" id="phone" name="phone" required />
+            <label for="country">País: <span class="danger">*</span></label>
+            <select id="country" name="country" required>
+              <option value="">Seleccione un país</option>
+              {
+                countries.map((country) => (
+                  <option
+                    value={country.name}
+                    selected={country.name === "Panama"}
+                  >
+                    {country.es_name}
+                  </option>
+                ))
+              }
+            </select>
+            <label for="company">Nombre de la empresa:</label>
+            <input type="text" id="company" name="company" />
+            <label for="position">Cargo:</label>
+            <input type="text" id="position" name="position" />
+            <label>
+              <input type="checkbox" name="consent" required />
+              Acepto que mis datos personales sean utilizados por OPACTIC para contactarme
+              sobre noticias de la comunidad, eventos de tecnología y contenido relevante.
+              <span class="danger">*</span>
+            </label>
+          </fieldset>
+          <p>Los campos con <span class="danger">*</span> son obligatorios.</p>
+          <button type="submit">Registrarse</button>
+        </form>
+        <div class="video">
+          <video src="/opactic-in-action.mp4" muted autoplay loop></video>
+        </div>
+      </div>
     </main>
   </body>
 </html>
