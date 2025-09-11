@@ -1,10 +1,10 @@
-# Astro Starter Kit: Minimal
+# Formulario Opactic - Feria TEC 2025
 
 ```sh
 npm create astro@latest -- --template minimal
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Formulario web para la participación en la Feria TEC 2025 de Opactic.
 
 ## 🚀 Project Structure
 
