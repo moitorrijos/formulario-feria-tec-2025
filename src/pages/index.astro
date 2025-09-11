@@ -28,6 +28,15 @@ import { Image } from "astro:assets";
     img {
       display: block;
     }
+    .flex {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .flex > * {
+      flex: 1 1 300px;
+    }
     span.danger {
       color: red;
     }
@@ -53,7 +62,7 @@ import { Image } from "astro:assets";
   </style>
   <body>
     <main class="container">
-      <div class="grid">
+      <div class="flex">
         <form action="#0">
           <a
             href="//opactic.org"
