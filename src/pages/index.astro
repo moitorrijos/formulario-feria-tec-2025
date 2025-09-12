@@ -3,6 +3,7 @@ export const prerender = false;
 import { countries } from "../../countries.json";
 import Logo from "../../assets/logo-opactic.png";
 import { Image } from "astro:assets";
+import { actions } from "astro:actions";
 ---
 
 <html lang="en" data-theme="light">
@@ -61,36 +62,38 @@ import { Image } from "astro:assets";
     }
   </style>
   <body>
+    <header class="container">
+      <a
+        href="//opactic.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="logo-link"
+      >
+        <Image
+          src={Logo}
+          alt="OPACTIC Logo"
+          width="200"
+          height="200"
+          class="logo-image"
+        />
+      </a>
+      <h2>Formulario de registro para Feria TEC 2025</h2>
+      <p>
+        Por favor, complete el siguiente formulario para registrarse en la Feria
+        TEC 2025 que se dará a cabo este sábado 20 de septiembre de 2025 desde
+        las 10am en el <a
+          href="https://maps.app.goo.gl/p7tynFGyuSCjXVD28"
+          target="_blank"
+          rel="noopener noreferrer">SOHO City Center</a
+        > de la ciudad de Panamá.
+      </p>
+    </header>
     <main class="container">
       <div class="flex">
-        <form action="#0">
-          <a
-            href="//opactic.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="logo-link"
-          >
-            <Image
-              src={Logo}
-              alt="OPACTIC Logo"
-              width="200"
-              height="200"
-              class="logo-image"
-            />
-          </a>
-          <h2>Formulario de registro para Feria TEC 2025</h2>
-          <p>
-            Por favor, complete el siguiente formulario para registrarse en la
-            Feria TEC 2025 que se dará a cabo este sábado 20 de septiembre de
-            2025 desde las 10am en el <a
-              href="https://maps.app.goo.gl/p7tynFGyuSCjXVD28"
-              target="_blank"
-              rel="noopener noreferrer">SOHO City Center</a
-            > de la ciudad de Panamá.
-          </p>
+        <form action={actions.send} method="POST">
           <fieldset>
             <label for="name">Nombre: <span class="danger">*</span></label>
-            <input type="text" id="name" name="name" required />
+            <input type="text" id="name" name="name" required autofocus />
             <label for="email"
               >Correo electrónico: <span class="danger">*</span></label
             >
@@ -111,6 +114,45 @@ import { Image } from "astro:assets";
                 ))
               }
             </select>
+            <label
+              >¿Es miembro de la comunidad OPACTIC? <span class="danger">*</span
+              ></label
+            >
+            <div>
+              <label>
+                <input type="radio" name="opactic_member" value="sí" required />
+                Sí
+              </label>
+              <label>
+                <input type="radio" name="opactic_member" value="no" required />
+                No
+              </label>
+            </div>
+            <label
+              >¿Se encuentra actualmente laborando? <span class="danger">*</span
+              ></label
+            >
+            <div>
+              <label>
+                <input type="radio" name="working" value="sí" required />
+                Sí
+              </label>
+              <label>
+                <input type="radio" name="working" value="no" required />
+                No
+              </label>
+            </div>
+            <label>¿Es estudiante? <span class="danger">*</span></label>
+            <div>
+              <label>
+                <input type="radio" name="student" value="sí" required />
+                Sí
+              </label>
+              <label>
+                <input type="radio" name="student" value="no" required />
+                No
+              </label>
+            </div>
             <label for="company">Nombre de la empresa:</label>
             <input type="text" id="company" name="company" />
             <label for="position">Cargo:</label>
