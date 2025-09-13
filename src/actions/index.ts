@@ -11,18 +11,19 @@ export const server = {
     input: z.object({
       name: z.string().min(2).max(100),
       email: z.string().email(),
-      phone: z.string().min(10).max(15),
+      phone: z.string().min(5).max(15),
       country: z.string().min(2).max(100),
       opactic_member: z.enum(['sí', 'no']),
       working: z.enum(['sí', 'no']),
       student: z.enum(['sí', 'no']),
       company: z.string().min(2).max(100).optional(),
       position: z.string().min(2).max(100).optional(),
-      consent: z.boolean().refine((val) => val === true, {
+      consent: z.string().refine((val) => val === 'true', {
         message: 'Se requiere consentimiento',
       }),
     }),
     handler: async (input) => {
+      console.log('Form input:', input);
       const { data, error } = await resend.batch.send([{
         from: email,
         to: ['Feria Tec <juanmtorrijos@gmail.com>'],
@@ -72,7 +73,7 @@ export const server = {
             ` : ''}
             <tr>
               <td><strong>Consentimiento:</strong></td>
-              <td>${input.consent ? 'Sí' : 'No'}</td>
+              <td>${input.consent === 'true' ? 'Sí' : 'No'}</td>
             </tr>
               </table>
             `,
