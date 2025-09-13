@@ -198,45 +198,53 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     </dialog>
   </body>
 </html>
-<script define:vars={{ RECAPTCHA_SITE_KEY }}>
+<script>
   import { actions } from "astro:actions";
   const form = document.querySelector("form");
   if (!form) throw new Error("Form not found");
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    grecaptcha.ready(function () {
-      grecaptcha
-        .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
-        .then(async function (token) {
-          const response = await fetch("/api/recaptcha", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ token }),
-          });
-          if (response.ok) {
-            const data = await response.json();
-            const formData = new FormData(form);
-            const { error } = await actions.send(formData);
-            if (error || data.score < 0.5) {
-              alert("Error al enviar el formulario");
-              console.error("Form submission error:", error, data.score);
-            } else {
-              const dialog = document.getElementById("thankYouDialog");
-              if (!dialog) throw new Error("Dialog not found");
-              const closeButton = document.getElementById(
-                "closeThankYouDialog"
-              );
-              if (!closeButton) throw new Error("Close button not found");
-              closeButton.addEventListener("click", () => {
-                dialog.close();
-              });
-              dialog.showModal();
-              form.reset();
-            }
-          }
+    const formData = new FormData(form);
+    const { error } = await actions.send(formData);
+    if (error) {
+      alert("Error al enviar el formulario: " + error.message);
+    } else {
+      const dialog = document.getElementById(
+        "thankYouDialog"
+      ) as HTMLDialogElement | null;
+      if (!dialog) throw new Error("Dialog not found");
+      const closeButton = document.getElementById("closeThankYouDialog");
+      if (!closeButton) throw new Error("Close button not found");
+      closeButton.addEventListener("click", () => {
+        dialog.close();
+      });
+      dialog.showModal();
+      form.reset();
+    }
+  });
+</script>
+<script define:vars={{ RECAPTCHA_SITE_KEY }}>
+  grecaptcha.ready(function () {
+    grecaptcha
+      .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
+      .then(async function (token) {
+        const response = await fetch("/api/recaptcha", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token }),
         });
-    });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.score >= 0.5) {
+            form.requestSubmit();
+          } else {
+            console.error(
+              "La verificación de reCAPTCHA falló. Por favor, inténtelo de nuevo."
+            );
+          }
+        }
+      });
   });
 </script>
