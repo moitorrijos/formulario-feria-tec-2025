@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions';
 import { Resend } from 'resend';
 import z from 'astro:schema';
+import { supabase } from '../lib/supabase';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 const email = import.meta.env.EMAIL_TO;
@@ -87,15 +88,32 @@ export const server = {
             <p>Saludos cordiales,<br/>El equipo de OPACTIC</p>
           `,
       }]);
-      console.log('Resend response:', { data, error });
-      if (error) {
+      const { data: supabaseData, error: supabaseError } = await supabase
+        .from('formulario-feria-tec-2025')
+        .insert({
+          name: input.name,
+          email: input.email,
+          phone: input.phone,
+          country: input.country,
+          opactic_member: input.opactic_member,
+          working: input.working,
+          student: input.student,
+          company: input.company,
+          position: input.position,
+        });
+      if (error || supabaseError) {
         throw new ActionError({
           code: 'BAD_REQUEST',
-          message: error.message,
+          message: error?.message || supabaseError?.message,
         });
       }
 
-      return data;
+      return {
+        success: true,
+        message: 'Formulario enviado correctamente',
+        data,
+        supabaseData,
+      };
     },
   }),
 };
