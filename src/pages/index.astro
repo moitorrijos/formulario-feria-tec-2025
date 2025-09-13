@@ -3,7 +3,6 @@ export const prerender = false;
 import { countries } from "../../countries.json";
 import Logo from "../../assets/logo-opactic.png";
 import { Image } from "astro:assets";
-import { actions } from "astro:actions";
 ---
 
 <html lang="en" data-theme="light">
@@ -90,7 +89,7 @@ import { actions } from "astro:actions";
     </header>
     <main class="container">
       <div class="flex">
-        <form action={actions.send} method="POST">
+        <form>
           <fieldset>
             <label for="name">Nombre: <span class="danger">*</span></label>
             <input type="text" id="name" name="name" required autofocus />
@@ -158,7 +157,7 @@ import { actions } from "astro:actions";
             <label for="position">Cargo:</label>
             <input type="text" id="position" name="position" />
             <label>
-              <input type="checkbox" name="consent" required />
+              <input type="checkbox" name="consent" value="true" required />
               Acepto que mis datos personales sean utilizados por OPACTIC para contactarme
               sobre noticias de la comunidad, eventos de tecnología y contenido relevante.
               <span class="danger">*</span>
@@ -172,5 +171,49 @@ import { actions } from "astro:actions";
         </div>
       </div>
     </main>
+    <dialog id="thankYouDialog">
+      <article>
+        <header>
+          <button id="closeThankYouDialog" aria-label="Close"></button>
+          <p>
+            <strong>🗓️ Gracias por registrarte!</strong>
+          </p>
+        </header>
+        <p>
+          Estamos muy emocionados de contar con tu participación en la Feria TEC
+          2025. Te esperamos este sábado 20 de septiembre de 2025 desde las 10am
+          en el SOHO City Center de la ciudad de Panamá.
+        </p>
+        <ul>
+          <li>Fecha: Sábado, 20 de septiembre de 2025</li>
+          <li>Hora: desde las 10:00am</li>
+        </ul>
+      </article>
+    </dialog>
   </body>
 </html>
+<script>
+  import { actions } from "astro:actions";
+  const form = document.querySelector("form");
+  if (!form) throw new Error("Form not found");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const { error } = await actions.send(formData);
+    if (error) {
+      alert("Error al enviar el formulario");
+    } else {
+      const dialog = document.getElementById(
+        "thankYouDialog"
+      ) as HTMLDialogElement;
+      if (!dialog) throw new Error("Dialog not found");
+      const closeButton = document.getElementById("closeThankYouDialog");
+      if (!closeButton) throw new Error("Close button not found");
+      closeButton.addEventListener("click", () => {
+        dialog.close();
+      });
+      dialog.showModal();
+      form.reset();
+    }
+  });
+</script>
