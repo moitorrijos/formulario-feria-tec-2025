@@ -171,10 +171,11 @@ import { Image } from "astro:assets";
         </div>
       </div>
     </main>
-    <dialog id="thankYouDialog">
+    <dialog id="thankYouDialog" open>
       <article>
         <header>
-          <button id="closeThankYouDialog" aria-label="Close"></button>
+          <button id="closeThankYouDialog" aria-label="Close" rel="prev"
+          ></button>
           <p>
             <strong>🗓️ Gracias por registrarte!</strong>
           </p>
