@@ -3,6 +3,7 @@ export const prerender = false;
 import { countries } from "../../countries.json";
 import Logo from "../../assets/logo-opactic.png";
 import { Image } from "astro:assets";
+const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
 <html lang="en" data-theme="light">
@@ -16,6 +17,10 @@ import { Image } from "astro:assets";
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
     <title>OPACTIC - Formulario de registro para Feria TEC 2025</title>
+    <script
+      type="text/javascript"
+      src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
+    ></script>
   </head>
   <style>
     body {
@@ -193,28 +198,45 @@ import { Image } from "astro:assets";
     </dialog>
   </body>
 </html>
-<script>
+<script define:vars={{ RECAPTCHA_SITE_KEY }}>
   import { actions } from "astro:actions";
   const form = document.querySelector("form");
   if (!form) throw new Error("Form not found");
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const formData = new FormData(form);
-    const { error } = await actions.send(formData);
-    if (error) {
-      alert("Error al enviar el formulario");
-    } else {
-      const dialog = document.getElementById(
-        "thankYouDialog"
-      ) as HTMLDialogElement;
-      if (!dialog) throw new Error("Dialog not found");
-      const closeButton = document.getElementById("closeThankYouDialog");
-      if (!closeButton) throw new Error("Close button not found");
-      closeButton.addEventListener("click", () => {
-        dialog.close();
-      });
-      dialog.showModal();
-      form.reset();
-    }
+    grecaptcha.ready(function () {
+      grecaptcha
+        .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
+        .then(async function (token) {
+          const response = await fetch("/api/recaptcha", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token }),
+          });
+          if (response.ok) {
+            const data = await response.json();
+            const formData = new FormData(form);
+            const { error } = await actions.send(formData);
+            if (error || data.score < 0.5) {
+              alert("Error al enviar el formulario");
+              console.error("Form submission error:", error, data.score);
+            } else {
+              const dialog = document.getElementById("thankYouDialog");
+              if (!dialog) throw new Error("Dialog not found");
+              const closeButton = document.getElementById(
+                "closeThankYouDialog"
+              );
+              if (!closeButton) throw new Error("Close button not found");
+              closeButton.addEventListener("click", () => {
+                dialog.close();
+              });
+              dialog.showModal();
+              form.reset();
+            }
+          }
+        });
+    });
   });
 </script>
