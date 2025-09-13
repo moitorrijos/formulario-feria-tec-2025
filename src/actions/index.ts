@@ -23,7 +23,6 @@ export const server = {
       }),
     }),
     handler: async (input) => {
-      console.log('Form input:', input);
       const { data, error } = await resend.batch.send([{
         from: email,
         to: ['Feria Tec <juanmtorrijos@gmail.com>'],
