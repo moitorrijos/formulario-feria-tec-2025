@@ -1,8 +1,6 @@
 ---
 export const prerender = false;
 import { countries } from "../../countries.json";
-import Logo from "../../assets/logo-opactic.png";
-import { Image } from "astro:assets";
 const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
 ---
 
@@ -16,7 +14,7 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     />
-    <title>OPACTIC - Formulario de registro para Feria TEC 2025</title>
+    <title>Formulario de registro para Feria TEC 2025</title>
     <script
       type="text/javascript"
       src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
@@ -45,16 +43,6 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
     span.danger {
       color: red;
     }
-    .logo-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      aspect-ratio: 1 / 1;
-    }
-    .logo-image {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
     .video {
       aspect-ratio: 9 / 16;
       height: 100%;
@@ -67,20 +55,6 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
   </style>
   <body>
     <header class="container">
-      <a
-        href="//opactic.org"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="logo-link"
-      >
-        <Image
-          src={Logo}
-          alt="OPACTIC Logo"
-          width="200"
-          height="200"
-          class="logo-image"
-        />
-      </a>
       <h2>Formulario de registro para Feria TEC 2025</h2>
       <p>
         Por favor, complete el siguiente formulario para registrarse en la Feria
