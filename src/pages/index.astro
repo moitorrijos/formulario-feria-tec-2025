@@ -228,6 +228,7 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
   });
 </script>
 <script define:vars={{ RECAPTCHA_SITE_KEY }}>
+  const form = document.querySelector("form");
   grecaptcha.ready(function () {
     grecaptcha
       .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
