@@ -12,7 +12,7 @@ export const server = {
     input: z.object({
       name: z.string().min(2).max(100),
       email: z.string().email(),
-      phone: z.string().min(5).max(15),
+      phone: z.string().min(5).max(15).optional(),
       country: z.string().min(2).max(100),
       opactic_member: z.enum(['sí', 'no']),
       working: z.enum(['sí', 'no']),
@@ -38,12 +38,14 @@ export const server = {
             <tr>
               <td><strong>Email:</strong></td>
               <td>${input.email}</td>
-            </tr>
-            <tr>
-              <td><strong>Teléfono:</strong></td>
-              <td>${input.phone}</td>
-            </tr>
-            <tr>
+        </tr>
+        ${input.phone ? `
+        <tr>
+          <td><strong>Teléfono:</strong></td>
+          <td>${input.phone}</td>
+        </tr>
+        ` : ''}
+        <tr>
               <td><strong>País:</strong></td>
               <td>${input.country}</td>
             </tr>
