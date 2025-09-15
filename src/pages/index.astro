@@ -216,11 +216,6 @@ const RECAPTCHA_SITE_KEY = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
         "thankYouDialog"
       ) as HTMLDialogElement | null;
       if (!dialog) throw new Error("Dialog not found");
-      const closeButton = document.getElementById("closeThankYouDialog");
-      if (!closeButton) throw new Error("Close button not found");
-      closeButton.addEventListener("click", () => {
-        dialog.close();
-      });
       dialog.showModal();
       form.reset();
       button.removeAttribute("aria-busy");
